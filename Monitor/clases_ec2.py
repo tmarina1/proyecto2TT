@@ -3,14 +3,8 @@ import accesoAWS
 import time
 
 class Manager:
-  def __init__(self, minUso:int, maxUso:int) -> None:
+  def __init__(self) -> None:
     self.pool = []
-    self.minUso = minUso
-    self.maxUso = maxUso
-    '''self.session = boto3.Session(
-      aws_access_key_id =  accesoAWS.aws_access_key_id,
-      aws_secret_access_key = accesoAWS.aws_secret_access_key
-    )'''
     self.ec2 = boto3.resource('ec2', 
                               aws_access_key_id =  accesoAWS.aws_access_key_id,
                               aws_secret_access_key = accesoAWS.aws_secret_access_key, 

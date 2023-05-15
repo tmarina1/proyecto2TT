@@ -8,33 +8,50 @@ from google.protobuf.json_format import MessageToDict
 
 #comando para proto: python -m grpc_tools.protoc --proto_path=. --python_out=. --grpc_python_out=. messages.proto
 
-def monitor():
-  manager = Manager(1, 1)
+uso = []
 
-  if manager.pool is None:
+def monitor():
+  global uso
+
+  if not manager.pool:
     for i in range(2):
       manager.crearInstanciaEC2('ami-0b6c5e19de6b71814')
+  else:
+    for instancia in manager.pool:
+      try:
+        conexionInstancia = gRPC(manager.pool[instancia][1], 'EstaVivo')
+        uso.append(conexionInstancia.usoCPU)
+      except:
+        conexionInstancia = 'EstaMuerto'   
 
-  for instancias in manager.pool:
-    try:
-      conexionInstancia = gRPC(manager.pool[instancias][1])
-    except:
-      conexionInstancia = 'EstaMuerto'   
+    promedioUso = sum(uso)/len(uso)
 
-  if manager.promedioUsoCPU > 60:
-    manager.crearInstanciaEC2(accesoAWS.ami_template)
+    if promedioUso >= 70:
+      manager.crearInstanciaEC2(accesoAWS.ami_template)
+      for instancia in manager.pool:
+        try:
+          conexionInstancia = gRPC(manager.pool[instancia][1], 'Evento')
+        except:
+          conexionInstancia = 'EstaMuerto'
 
-  if manager.promedioUsoCPU < 20:
-    tupla = random.choice(manager.pool)
-    IP = tupla[1]
-    manager.eliminarInstanciaEC2(IP)
+    if promedioUso <= 20:
+      tupla = random.choice(manager.pool)
+      IP = tupla[1]
+      manager.eliminarInstanciaEC2(IP)
+      for instancia in manager.pool:
+        try:
+          conexionInstancia = gRPC(manager.pool[instancia][1], 'Evento')
+        except:
+          conexionInstancia = 'EstaMuerto'
 
-def gRPC(IP):
+def gRPC(IP, peticion):
   channel = grpc.insecure_channel(f'{IP}:8080')
   stub = messages_pb2_grpc.messageServiceStub(channel)
-  response = stub.message(messages_pb2.instructionRequest(estado = 'EstaVivo'))
+  response = stub.message(messages_pb2.instructionRequest(estado = peticion))
   response  = MessageToDict(response)
   return response
 
 if __name__ == "__main__":
-  monitor()
+  manager = Manager()
+  while True:
+    monitor()

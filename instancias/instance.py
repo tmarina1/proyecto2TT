@@ -48,3 +48,6 @@ def serve():
     server.add_insecure_port(f'[::]:8080')
     server.start()
     server.wait_for_termination()
+
+if __name__ == "__main__":
+    serve()

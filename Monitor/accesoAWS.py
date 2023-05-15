@@ -1,0 +1,5 @@
+ami_template = 'ami-0b6c5e19de6b71814'
+
+aws_access_key_id = 'ASIAQZFGU3EJLCVB35E7'
+aws_secret_access_key = 'F8kLOljsYhWcUl0rPmoIpdXdFz3P8u8SIEF9urxa'
+aws_session_token = 'FwoGZXIvYXdzEKP//////////wEaDDYVhTElrO5v6X8NKCLFASAP4Y+Pp5zmJXDp9ZPbWElyRWSRzZj2GcACRdcIuDC0H2xfj5UWVU8snywUhM+JW88GDfO54GhRGqjCgIlM3SpyDrJBJAjPfJyZndJfobRBfxd9H6Sc7oieyKI71fSLCT8jdvpGxGP9AiZhsHXwKA0TxL7VAeQdrGqsIUJlDXIjoxDdAynURZp8+YmuFR/4D39UlBR3O2JEc+qz4QCyid6wirAEQrpFEtnWKpuBXEFxp0xnm36MCLeZZiBBTslxOwuU0kFZKKHA9KIGMi0t3qfKTiwaDKA0xZcY2PxyvOE7WAN32cRM0UnjKriu1g3SYh3Ea2VGMDtkE2o='

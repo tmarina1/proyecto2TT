@@ -9,6 +9,6 @@ message instructionRequest {
 }
 
 message messageResponse {
-  repeated string respuesta = 1;
-  repeated int32 usoCPU = 2;
+  string respuesta = 1;
+  int32 usoCPU = 2;
 }

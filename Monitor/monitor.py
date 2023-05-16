@@ -15,34 +15,42 @@ def monitor():
 
   if not manager.pool:
     for i in range(2):
-      manager.crearInstanciaEC2('ami-0b6c5e19de6b71814')
+      manager.crearInstanciaEC2(accesoAWS.ami_template)
+      manager.verPool()
   else:
     for instancia in manager.pool:
       try:
-        conexionInstancia = gRPC(manager.pool[instancia][1], 'EstaVivo')
+        conexionInstancia = gRPC(instancia[1], 'EstaVivo')
+        print(conexionInstancia)
         uso.append(conexionInstancia.usoCPU)
+        if uso:
+          promedioUso = sum(uso)/len(uso)
+          print(promedioUso)
+
+        if promedioUso >= 70:
+          manager.crearInstanciaEC2(accesoAWS.ami_template)
+          manager.verPool()
+          for instancia in manager.pool:
+            try:
+              conexionInstancia = gRPC(manager.pool[instancia][1], 'Evento')
+              print(conexionInstancia)
+            except:
+              conexionInstancia = 'EstaMuerto3'
+              print(conexionInstancia)
+        if promedioUso <= 20:
+          tupla = random.choice(manager.pool)
+          IP = tupla[1]
+          manager.eliminarInstanciaEC2(IP)
+          manager.verPool()
+          for instancia in manager.pool:
+            try:
+              conexionInstancia = gRPC(manager.pool[instancia][1], 'Evento')
+            except:
+              conexionInstancia = 'EstaMuerto2'
+              print(conexionInstancia)
       except:
-        conexionInstancia = 'EstaMuerto'   
-
-    promedioUso = sum(uso)/len(uso)
-
-    if promedioUso >= 70:
-      manager.crearInstanciaEC2(accesoAWS.ami_template)
-      for instancia in manager.pool:
-        try:
-          conexionInstancia = gRPC(manager.pool[instancia][1], 'Evento')
-        except:
-          conexionInstancia = 'EstaMuerto'
-
-    if promedioUso <= 20:
-      tupla = random.choice(manager.pool)
-      IP = tupla[1]
-      manager.eliminarInstanciaEC2(IP)
-      for instancia in manager.pool:
-        try:
-          conexionInstancia = gRPC(manager.pool[instancia][1], 'Evento')
-        except:
-          conexionInstancia = 'EstaMuerto'
+        conexionInstancia = 'EstaMuerto1'   
+        #print(conexionInstancia)
 
 def gRPC(IP, peticion):
   channel = grpc.insecure_channel(f'{IP}:8080')

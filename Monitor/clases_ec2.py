@@ -19,7 +19,7 @@ class Manager:
       InstanceType = 't2.micro', 
       KeyName = "vockey",
       )
-    time.sleep(1)
+    time.sleep(3)
     instancia[0].reload()
     self.pool.append((instancia[0].id, instancia[0].public_ip_address))
     return instancia

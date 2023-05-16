@@ -21,36 +21,45 @@ def monitor():
     for instancia in manager.pool:
       try:
         conexionInstancia = gRPC(instancia[1], 'EstaVivo')
-        print(conexionInstancia)
-        uso.append(conexionInstancia.usoCPU)
-        if uso:
-          promedioUso = sum(uso)/len(uso)
-          print(promedioUso)
+        uso.append(conexionInstancia["usoCPU"])
+      except:
+        conexionInstancia = 'EstaMuerto1'   
+    if uso:
+        promedioUso = sum(uso)/len(uso)
+        print(promedioUso)
+        uso = []
 
         if promedioUso >= 70:
+          print('creando')
           manager.crearInstanciaEC2(accesoAWS.ami_template)
           manager.verPool()
           for instancia in manager.pool:
             try:
-              conexionInstancia = gRPC(manager.pool[instancia][1], 'Evento')
+              conexionInstancia = gRPC(instancia[1], 'Evento')
               print(conexionInstancia)
             except:
               conexionInstancia = 'EstaMuerto3'
               print(conexionInstancia)
-        if promedioUso <= 20:
-          tupla = random.choice(manager.pool)
-          IP = tupla[1]
-          manager.eliminarInstanciaEC2(IP)
-          manager.verPool()
-          for instancia in manager.pool:
-            try:
-              conexionInstancia = gRPC(manager.pool[instancia][1], 'Evento')
-            except:
-              conexionInstancia = 'EstaMuerto2'
-              print(conexionInstancia)
-      except:
-        conexionInstancia = 'EstaMuerto1'   
-        #print(conexionInstancia)
+        if promedioUso < 19:
+          if len(manager.pool) == 1:
+              try:
+                conexionInstancia = gRPC(manager.pool[0][1], 'Evento')
+              except:
+                conexionInstancia = 'EstaMuerto2'
+          else:
+            print('borrando')
+            tupla = random.choice(manager.pool)
+            IDinstancia = tupla[0]
+            manager.eliminarInstanciaEC2(IDinstancia)
+            valTupla = manager.pool.index(tupla)
+            manager.pool.pop(valTupla)
+            manager.verPool()
+            for instancia in manager.pool:
+              try:
+                conexionInstancia = gRPC(instancia[1], 'Evento')
+              except:
+                conexionInstancia = 'EstaMuerto2'
+                print(conexionInstancia)
 
 def gRPC(IP, peticion):
   channel = grpc.insecure_channel(f'{IP}:8080')

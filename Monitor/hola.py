@@ -2,7 +2,6 @@ import grpc
 import messages_pb2
 import messages_pb2_grpc
 import accesoAWS
-import random
 from clases_ec2 import Manager
 from google.protobuf.json_format import MessageToDict
 
@@ -10,7 +9,7 @@ from google.protobuf.json_format import MessageToDict
 
 
 def monitor():
-  hola = gRPC('3.84.130.50', 'EstaVivo')
+  hola = gRPC('54.204.115.132', 'EstaVivo')
   print(hola)
 
 def gRPC(IP, peticion):

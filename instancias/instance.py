@@ -20,14 +20,14 @@ def usoCPU():
     global uso
     global estado
     if estado == 0:
-        delta = random.random()
+        delta = random()
         print(f'DELTA1 --> {delta}')
         if delta <= 0.5:
             uso -= 1
         else:
             uso +=1
         
-        delta2 = random.random()
+        delta2 = random()
         print(f'DELTA2 --> {delta2}')
         if delta2 >= 0.8 and delta2<=0.85:
             estado = 2

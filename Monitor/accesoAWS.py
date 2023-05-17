@@ -1,4 +1,4 @@
-ami_template = 'ami-0d68b34dc8d1a9932'
+ami_template = 'ami-0a30ae5f76958409c'
 
 aws_access_key_id = 'ASIAQZFGU3EJJPX4HQQ7'
 aws_secret_access_key = '97m3iJzEKofT9E9sZR9zAie8l5gkWcBWJ1YMo91m'

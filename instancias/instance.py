@@ -37,10 +37,10 @@ def usoCPU():
             estado = 0
     elif estado == 1 and uso <100:
         print(uso)
-        uso +=1
+        uso += 4
     elif estado == 2 and uso > 0:
         print(uso)
-        uso -= 1
+        uso -= 4
     
     return uso
     '''if estado == 1:
@@ -62,8 +62,8 @@ def usoCPU():
 def reset():
     global uso
     global estado
-    uso = 20
-    estado = 1
+    uso = 30
+    estado = 0
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

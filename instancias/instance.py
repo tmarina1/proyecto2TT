@@ -4,7 +4,7 @@ import messages_pb2_grpc
 from random import random,choices
 from concurrent import futures
 
-uso = 20
+uso = 30
 estado = 1
 
 class messageService(messages_pb2_grpc.messageServiceServicer):
@@ -25,7 +25,6 @@ def usoCPU():
             uso -= 1
         else:
             uso +=1
-
         estados = [0,1,2]
         probs = [0.01,0.8,0.01]
         estado = choices(estados,weights=probs,k=1)[0]

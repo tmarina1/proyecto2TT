@@ -15,15 +15,18 @@ def monitor():
 
   if not manager.pool:
     for i in range(2):
-      manager.crearInstanciaEC2(accesoAWS.ami_template)
-      manager.verPool()
+      try:
+        manager.crearInstanciaEC2(accesoAWS.ami_template)
+        manager.verPool()
+      except:
+        conexionInstancia = 'Error en  creacción instancias iniciales'
   else:
     for instancia in manager.pool:
       try:
         conexionInstancia = gRPC(instancia[1], 'EstaVivo')
         uso.append(conexionInstancia["usoCPU"])
       except:
-        conexionInstancia = 'EstaMuerto1'   
+        conexionInstancia = 'Error en envio de EstaVivo a instancia'   
     if uso:
         promedioUso = sum(uso)/len(uso)
         print(promedioUso)
@@ -38,14 +41,15 @@ def monitor():
               conexionInstancia = gRPC(instancia[1], 'Evento')
               print(conexionInstancia)
             except:
-              conexionInstancia = 'EstaMuerto3'
+              conexionInstancia = 'Error en envio de evento crear instancia'
               print(conexionInstancia)
         if promedioUso < 19:
-          if len(manager.pool) == 1:
-              try:
-                conexionInstancia = gRPC(manager.pool[0][1], 'Evento')
-              except:
-                conexionInstancia = 'EstaMuerto2'
+          if len(manager.pool) == 2:
+              for instancia in manager.pool:
+                try:
+                  conexionInstancia = gRPC(instancia[1], 'Evento')
+                except:
+                  conexionInstancia = 'Error en envio de evento'
           else:
             print('borrando')
             tupla = random.choice(manager.pool)
@@ -58,7 +62,7 @@ def monitor():
               try:
                 conexionInstancia = gRPC(instancia[1], 'Evento')
               except:
-                conexionInstancia = 'EstaMuerto2'
+                conexionInstancia = 'Error en envio de evento eliminar instancia'
                 print(conexionInstancia)
 
 def gRPC(IP, peticion):

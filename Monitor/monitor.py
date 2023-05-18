@@ -2,6 +2,7 @@ import grpc
 import messages_pb2
 import messages_pb2_grpc
 import accesoAWS
+import time
 import random
 from clases_ec2 import Manager
 from google.protobuf.json_format import MessageToDict

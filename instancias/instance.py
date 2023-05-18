@@ -37,10 +37,10 @@ def usoCPU():
             estado = 0
     elif estado == 1 and uso <100:
         print(uso)
-        uso += 4
+        uso += 2
     elif estado == 2 and uso > 0:
         print(uso)
-        uso -= 4
+        uso -= 2
     
     return uso
     '''if estado == 1:

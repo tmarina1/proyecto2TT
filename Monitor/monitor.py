@@ -23,7 +23,7 @@ def monitor():
         conexionInstancia = 'Error en  creacción instancias iniciales'
   else:
     for instancia in manager.pool:
-      time.sleep(2)
+      time.sleep(1)
       try:
         conexionInstancia = gRPC(instancia[1], 'EstaVivo')
         uso.append(conexionInstancia["usoCPU"])
@@ -35,7 +35,7 @@ def monitor():
         valMax = max(uso)
         manager.verPool()
         print(f'Valor minimo{valMin}')
-        print(f'Valor minimo{valMax}')
+        print(f'Valor maximo{valMax}')
         uso = []
 
         if valMax >= 70:

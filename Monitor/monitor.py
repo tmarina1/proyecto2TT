@@ -22,6 +22,7 @@ def monitor():
         conexionInstancia = 'Error en  creacción instancias iniciales'
   else:
     for instancia in manager.pool:
+      time.sleep(2)
       try:
         conexionInstancia = gRPC(instancia[1], 'EstaVivo')
         uso.append(conexionInstancia["usoCPU"])

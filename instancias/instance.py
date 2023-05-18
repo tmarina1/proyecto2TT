@@ -43,21 +43,6 @@ def usoCPU():
         uso -= 2
     
     return uso
-    '''if estado == 1:
-        delta = random()
-        if delta <= 0.5:
-            uso -= 1
-        else:
-            uso +=1
-        estados = [0,1,2]
-        probs = [0.01,0.8,0.01]
-        estado = choices(estados,weights=probs,k=1)[0]
-        
-    elif estado == 0 and uso >= 5:
-        uso -= 5
-    elif estado == 2 and uso <= 95:
-        uso += 5
-    return uso'''
 
 def reset():
     global uso

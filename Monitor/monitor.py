@@ -28,11 +28,15 @@ def monitor():
       except:
         conexionInstancia = 'Error en envio de EstaVivo a instancia'   
     if uso:
-        promedioUso = sum(uso)/len(uso)
-        print(promedioUso)
+        #promedioUso = sum(uso)/len(uso)
+        valMin = min(uso) 
+        valMax = max(uso)
+        manager.verPool()
+        print(f'Valor minimo{valMin}')
+        print(f'Valor minimo{valMax}')
         uso = []
 
-        if promedioUso >= 70:
+        if valMax >= 70:
           print('creando')
           manager.crearInstanciaEC2(accesoAWS.ami_template)
           manager.verPool()
@@ -43,7 +47,7 @@ def monitor():
             except:
               conexionInstancia = 'Error en envio de evento crear instancia'
               print(conexionInstancia)
-        if promedioUso < 19:
+        if valMin < 19:
           if len(manager.pool) == 2:
               for instancia in manager.pool:
                 try:
